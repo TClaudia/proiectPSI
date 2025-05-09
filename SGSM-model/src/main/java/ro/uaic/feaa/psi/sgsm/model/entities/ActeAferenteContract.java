@@ -8,23 +8,19 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ro.uaic.feaa.psi.metamodel.AbstractEntity;
+
 /**
  * Entitate pentru gestionarea actelor aferente contractelor.
- * Conform diagramei din imaginile furnizate.
  */
 @Entity
-public class ActeAferenteContract {
-
-    @Id
-    @Column(name = "IdDocument", length = 10)
-    private String idDocument;
+public class ActeAferenteContract extends AbstractEntity {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "DataDocument")
@@ -33,7 +29,7 @@ public class ActeAferenteContract {
     @Column(name = "TipDocument", length = 30)
     private String tipDocument;
 
-    @Column(name = "NrDocument", length = 10)
+    @Column(name = "NrDocument", length = 30)
     private String nrDocument;
 
     @Column(name = "Clauze", length = 255)
@@ -45,31 +41,28 @@ public class ActeAferenteContract {
     @Column(name = "Descriere", length = 255)
     private String descriere;
 
-    @Column(name = "TipDocumentAferentContract")
+    @Column(name = "TipDocumentAferentContract", length = 30)
     private String tipDocumentAferentContract;
 
+    @Temporal(TemporalType.DATE)
+    @Column(name = "DataOperare")
+    private Date dataOperare;
+
     @ManyToOne
-    @JoinColumn(name = "Contract_IdDocument")
+    @JoinColumn(name = "Contract_id")
     private Contract contract;
 
-    @OneToMany(mappedBy = "acteAferenteContract", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "documentModificare", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ModificareContract> modificariContract = new HashSet<>();
 
     /**
      * Constructor implicit necesar pentru JPA.
      */
     public ActeAferenteContract() {
+        this.dataOperare = new Date();
     }
 
     // Getteri și setteri
-    public String getIdDocument() {
-        return idDocument;
-    }
-
-    public void setIdDocument(String idDocument) {
-        this.idDocument = idDocument;
-    }
-
     public Date getDataDocument() {
         return dataDocument;
     }
@@ -124,6 +117,14 @@ public class ActeAferenteContract {
 
     public void setTipDocumentAferentContract(String tipDocumentAferentContract) {
         this.tipDocumentAferentContract = tipDocumentAferentContract;
+    }
+
+    public Date getDataOperare() {
+        return dataOperare;
+    }
+
+    public void setDataOperare(Date dataOperare) {
+        this.dataOperare = dataOperare;
     }
 
     public Contract getContract() {

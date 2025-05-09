@@ -4,59 +4,67 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import ro.uaic.feaa.psi.metamodel.AbstractEntity;
+
 /**
  * Entitate pentru gestionarea modificărilor contractelor.
- * Conform diagramei din imaginile furnizate.
  */
 @Entity
-public class ModificariContract {
-
-    @Id
-    @Column(name = "IdDocument", length = 10)
-    private String idDocument;
+public class ModificareContract extends AbstractEntity {
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "DataModificare")
+    @Column(name = "DataModificare", nullable = false)
     private Date dataModificare;
 
+    @Column(name = "Status", length = 30, nullable = false)
+    private String status;
+
+    @Column(name = "Descriere", length = 255)
+    private String descriere;
+
     @ManyToOne
-    @JoinColumn(name = "Contract_IdDocument", nullable = false)
+    @JoinColumn(name = "Contract_id", nullable = false)
     private Contract contract;
 
     @ManyToOne
-    @JoinColumn(name = "ActeAferenteContract_IdDocument")
-    private ActeAferenteContract acteAferenteContract;
-
-    @Column(name = "ModificareAprobata")
-    private String modificareAprobata;
+    @JoinColumn(name = "DocumentModificare_id")
+    private ActeAferenteContract documentModificare;
 
     /**
      * Constructor implicit necesar pentru JPA.
      */
     public ModificareContract() {
+        this.dataModificare = new Date();
     }
 
     // Getteri și setteri
-    public String getIdDocument() {
-        return idDocument;
-    }
-
-    public void setIdDocument(String idDocument) {
-        this.idDocument = idDocument;
-    }
-
     public Date getDataModificare() {
         return dataModificare;
     }
 
     public void setDataModificare(Date dataModificare) {
         this.dataModificare = dataModificare;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDescriere() {
+        return descriere;
+    }
+
+    public void setDescriere(String descriere) {
+        this.descriere = descriere;
     }
 
     public Contract getContract() {
@@ -67,19 +75,11 @@ public class ModificariContract {
         this.contract = contract;
     }
 
-    public ActeAferenteContract getActeAferenteContract() {
-        return acteAferenteContract;
+    public ActeAferenteContract getDocumentModificare() {
+        return documentModificare;
     }
 
-    public void setActeAferenteContract(ActeAferenteContract acteAferenteContract) {
-        this.acteAferenteContract = acteAferenteContract;
-    }
-
-    public String getModificareAprobata() {
-        return modificareAprobata;
-    }
-
-    public void setModificareAprobata(String modificareAprobata) {
-        this.modificareAprobata = modificareAprobata;
+    public void setDocumentModificare(ActeAferenteContract documentModificare) {
+        this.documentModificare = documentModificare;
     }
 }

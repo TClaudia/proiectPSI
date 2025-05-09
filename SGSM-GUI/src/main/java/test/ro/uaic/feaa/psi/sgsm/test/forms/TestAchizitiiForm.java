@@ -2,8 +2,6 @@ package test.ro.uaic.feaa.psi.sgsm.test.forms;
 
 import org.junit.Assert;
 
-import src.ro.uaic.feaa.psi.sgsm.forms.AchizitiiFormCtrl;
-
 public class TestAchizitiiForm {
 
 	public static void main(String[] args) {

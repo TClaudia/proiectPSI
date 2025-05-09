@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 import ro.uaic.feaa.psi.metamodel.AbstractRepository;
+import ro.uaic.feaa.psi.sgsm.model.entities.ActeAferenteContract;
+import ro.uaic.feaa.psi.sgsm.model.entities.Contract;
+import ro.uaic.feaa.psi.sgsm.model.entities.ModificareContract;
 
 /**
  * Repository pentru operațiile specifice contractelor.
@@ -126,7 +129,7 @@ public class ContractRepository extends AbstractRepository {
     public Contract findContractByNumar(String numarContract) {
         try {
             return (Contract) this.getEm()
-                    .createQuery("SELECT c FROM Contract c WHERE c.numarDocument = :numarContract")
+                    .createQuery("SELECT c FROM Contract c WHERE c.numarContract = :numarContract")
                     .setParameter("numarContract", numarContract)
                     .getSingleResult();
         } catch (Exception e) {
