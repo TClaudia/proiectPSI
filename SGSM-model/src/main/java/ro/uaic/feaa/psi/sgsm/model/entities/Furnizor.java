@@ -1,115 +1,166 @@
 package ro.uaic.feaa.psi.sgsm.model.entities;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-import ro.uaic.feaa.psi.metamodel.AbstractEntity;
-
+/**
+ * Entitate pentru gestionarea furnizorilor.
+ * Conform diagramei din imaginile furnizate.
+ */
 @Entity
-public class Furnizor extends AbstractEntity {
+public class Furnizor {
 
-	@Column(unique = true)
-	private String cod;
-	private String nume;
-	private String adresa;
+    @Id
+    @Column(name = "IdFurnizor", length = 10)
+    private String idFurnizor;
 
-	private String CUI;
-	private String banca;
-	private String contBancar;
-	private Double sold;
-	@ManyToOne 
-	private Localitate localitate;
+    @Column(name = "NumeFurnizor", length = 255)
+    private String numeFurnizor;
 
-	public Furnizor() {
-	}
+    @Column(name = "NumeTelefon", length = 10)
+    private String numeTelefon;
 
-	/**
-	 * Constructor necesar pentru a incarca doar numite campuri din baza de
-	 * date. Scop: optimizare acces la date si timp de executie interogari. A se
-	 * OBSERVA: Lipseste atributul localitate, care este o relatie ManyToOne si
-	 * va genera un join. In lipsa acestuia, hibernate va executa interogarea
-	 * numai pe tabela Furnizor. Verificati prin rularea trestului
-	 * {@link TestFurnizori} si urmarind SQL generat la consola.
-	 * 
-	 * @param id
-	 *            - id-ul trebuie OBLIGATORIU incarcat din BD - in caz contrar, JPA nu va
-	 *            sti cum sa gaseasca cheile straine necesare relatiilor
-	 *            ManyToOne in care apare entitatea Furnizor
-	 * @param cod
-	 * @param nume
-	 * @param adresa
-	 * @param cui
-	 * @param banca
-	 * @param contBancar
-	 */
-	public Furnizor(Long id, String cod, String nume, String adresa,
-			String cui, String banca, String contBancar) {
-		super();
-		this.id=id; //din superclasa
-		this.cod = cod;
-		this.nume = nume;
-		this.adresa = adresa;
-		CUI = cui;
-		this.banca = banca;
-		this.contBancar = contBancar;
-	}
+    @Column(name = "Email", length = 255)
+    private String email;
 
-	public String getNume() {
-		return nume;
-	}
+    @Column(name = "TipFurnizor", length = 30)
+    private String tipFurnizor;
 
-	public void setNume(String nume) {
-		this.nume = nume;
-	}
+    @Column(name = "Garantie", length = 30)
+    private String garantie;
 
-	public String getAdresa() {
-		return adresa;
-	}
+    @Column(name = "CodFiscal", length = 30)
+    private String codFiscal;
 
-	public void setAdresa(String adresa) {
-		this.adresa = adresa;
-	}
+    @Column(name = "ConditiiMontaj", length = 255)
+    private String conditiiMontaj;
 
-	public String getBanca() {
-		return banca;
-	}
+    @Column(name = "termenExpirare", length = 30)
+    private String termenExpirare;
 
-	public void setBanca(String banca) {
-		this.banca = banca;
-	}
+    @OneToMany(mappedBy = "furnizor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Contract> contracte = new HashSet<>();
 
-	public Double getSold() {
-		return sold;
-	}
+    @OneToMany(mappedBy = "furnizor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Comanda> comenzi = new HashSet<>();
 
-	public void setSold(Double sold) {
-		this.sold = sold;
-	}
+    @OneToMany(mappedBy = "furnizor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<DocumentInsotitor> documenteInsotitoare = new HashSet<>();
 
-	public Localitate getLocalitate() {
-		return localitate;
-	}
+    @OneToMany(mappedBy = "furnizor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<EvaluarePerformantaFurnizori> evaluari = new HashSet<>();
 
-	public void setLocalitate(Localitate localitate) {
-		this.localitate = localitate;
-	}
+    /**
+     * Constructor implicit necesar pentru JPA.
+     */
+    public Furnizor() {
+    }
 
-	public String getContBancar() {
-		return contBancar;
-	}
+    /**
+     * Constructor pentru versiunea "light" a furnizorilor.
+     */
+    public Furnizor(String idFurnizor, String numeFurnizor, String numeTelefon,
+                    String email, String tipFurnizor) {
+        this.idFurnizor = idFurnizor;
+        this.numeFurnizor = numeFurnizor;
+        this.numeTelefon = numeTelefon;
+        this.email = email;
+        this.tipFurnizor = tipFurnizor;
+    }
 
-	public void setContBancar(String contBancar) {
-		this.contBancar = contBancar;
-	}
+    // Getteri și setteri
+    public String getIdFurnizor() {
+        return idFurnizor;
+    }
 
-	public String getCUI() {
-		return CUI;
-	}
+    public void setIdFurnizor(String idFurnizor) {
+        this.idFurnizor = idFurnizor;
+    }
 
-	public void setCUI(String cui) {
-		CUI = cui;
-	}
+    public String getNumeFurnizor() {
+        return numeFurnizor;
+    }
 
+    public void setNumeFurnizor(String numeFurnizor) {
+        this.numeFurnizor = numeFurnizor;
+    }
+
+    public String getNumeTelefon() {
+        return numeTelefon;
+    }
+
+    public void setNumeTelefon(String numeTelefon) {
+        this.numeTelefon = numeTelefon;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTipFurnizor() {
+        return tipFurnizor;
+    }
+
+    public void setTipFurnizor(String tipFurnizor) {
+        this.tipFurnizor = tipFurnizor;
+    }
+
+    public String getGarantie() {
+        return garantie;
+    }
+
+    public void setGarantie(String garantie) {
+        this.garantie = garantie;
+    }
+
+    public String getCodFiscal() {
+        return codFiscal;
+    }
+
+    public void setCodFiscal(String codFiscal) {
+        this.codFiscal = codFiscal;
+    }
+
+    public String getConditiiMontaj() {
+        return conditiiMontaj;
+    }
+
+    public void setConditiiMontaj(String conditiiMontaj) {
+        this.conditiiMontaj = conditiiMontaj;
+    }
+
+    public String getTermenExpirare() {
+        return termenExpirare;
+    }
+
+    public void setTermenExpirare(String termenExpirare) {
+        this.termenExpirare = termenExpirare;
+    }
+
+    public Set<Contract> getContracte() {
+        return contracte;
+    }
+
+    public Set<Comanda> getComenzi() {
+        return comenzi;
+    }
+
+    public Set<DocumentInsotitor> getDocumenteInsotitoare() {
+        return documenteInsotitoare;
+    }
+
+    public Set<EvaluarePerformantaFurnizori> getEvaluari() {
+        return evaluari;
+    }
 }

@@ -1,10 +1,7 @@
 package test.ro.uaic.feaa.psi.sgsm.test.forms;
 
-import java.util.List;
-
 import org.junit.Assert;
 
-import ro.uaic.feaa.psi.sgsm.model.entities.LinieDocument;
 import src.ro.uaic.feaa.psi.sgsm.forms.AchizitiiFormCtrl;
 
 public class TestAchizitiiForm {

@@ -3,8 +3,6 @@ package ro.uaic.feaa.psi.metamodel;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
-import ro.uaic.feaa.psi.sgsm.model.repository.MasterRepository;
-
 /**
  * Clasa radacina pentru Repositories. Pentru convenienta, ofera un
  * EntityManager gata configurat care poate fi insa suprascris de subclase, in

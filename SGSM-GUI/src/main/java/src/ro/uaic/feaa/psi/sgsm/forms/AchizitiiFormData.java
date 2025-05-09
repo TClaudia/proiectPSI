@@ -3,17 +3,6 @@ package src.ro.uaic.feaa.psi.sgsm.forms;
 import java.util.LinkedList;
 import java.util.List;
 
-import ro.uaic.feaa.psi.sgsm.model.entities.BunMaterial;
-import ro.uaic.feaa.psi.sgsm.model.entities.DocInsotitor;
-import ro.uaic.feaa.psi.sgsm.model.entities.Furnizor;
-import ro.uaic.feaa.psi.sgsm.model.entities.Gestiune;
-import ro.uaic.feaa.psi.sgsm.model.entities.LinieDocument;
-import ro.uaic.feaa.psi.sgsm.model.entities.Receptie;
-
-import ro.uaic.feaa.psi.sgsm.model.repository.DocumentRepository;
-
-import ro.uaic.feaa.psi.sgsm.model.repository.MasterRepository;
-
 /**
  * Aceasta clasa constituie modelul pentru formularul de achizitii. Este un
  * adaptor al modelului SGSM: are rolul de a pregati (filtra/adapta/transforma)

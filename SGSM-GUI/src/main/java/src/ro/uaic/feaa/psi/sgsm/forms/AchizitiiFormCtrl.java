@@ -1,9 +1,5 @@
 package src.ro.uaic.feaa.psi.sgsm.forms;
 
-import ro.uaic.feaa.psi.sgsm.model.entities.DocInsotitor;
-import ro.uaic.feaa.psi.sgsm.model.entities.LinieDocument;
-import ro.uaic.feaa.psi.sgsm.model.entities.Receptie;
-
 /**
  * Aceasta clasa are rol de Controller. Asta inseamna ca furnizeaza metodele
  * necesare pentru implementarea comportamentului formularului, comportament ce
