@@ -1,4 +1,4 @@
-package test;
+package test.ro.uaic.feaa.psi.sgsm.test;
 
 import java.util.Iterator;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.Assert;
 
 import ro.uaic.feaa.psi.sgsm.model.entities.Furnizor;
-import ro.uaic.feaa.psi.sgsm.model.entities.Localitate;
 import ro.uaic.feaa.psi.sgsm.model.repository.MasterRepository;
 
 /**
@@ -75,18 +74,5 @@ public class TestFurnizori {
 
         System.out.println("Au fost adăugați 5 furnizori pentru test!");
     }
-
-    private static void adaugaLocalitati() {
-        repo.beginTransaction();
-        for (int i = 1; i < 10; i++) {
-            Localitate loc = new Localitate();
-            loc.setCod(100 + i);
-            loc.setDenumire("Localitate " + (100 + i));
-
-            repo.addLocalitate(loc);
-        }
-        repo.commitTransaction();
-
-        System.out.println("Au fost adăugate localități pentru test!");
-    }
 }
+

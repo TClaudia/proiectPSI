@@ -2,11 +2,7 @@ package src.ro.uaic.feaa.psi.sgsm.forms;
 
 import java.util.Date;
 
-import ro.uaic.feaa.psi.sgsm.model.entities.ActAditional;
-import ro.uaic.feaa.psi.sgsm.model.entities.ActeAferenteContract;
-import ro.uaic.feaa.psi.sgsm.model.entities.Contract;
-import ro.uaic.feaa.psi.sgsm.model.entities.FormularReziliere;
-import ro.uaic.feaa.psi.sgsm.model.entities.ModificareContract;
+import ro.uaic.feaa.psi.sgsm.model.entities.*;
 
 /**
  * Aceasta clasă are rol de Controller. Asta înseamnă că furnizează metodele

@@ -1,4 +1,4 @@
-package test;
+package test.ro.uaic.feaa.psi.sgsm.test;
 
 import java.util.List;
 

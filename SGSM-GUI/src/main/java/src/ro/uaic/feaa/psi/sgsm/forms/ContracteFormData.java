@@ -84,7 +84,7 @@ public class ContracteFormData {
         this.contractCurent.setFurnizor(furnizorComplet);
     }
 
-    // ------------- ZONA 2 -- RESPONSABILI --------------
+    // ------------- ZONA 2 -- RESPONSABILI --------------//
 
     private List<Angajat> listaAngajati;
 
@@ -108,122 +108,121 @@ public class ContracteFormData {
         // Obținem angajatul complet din baza de date
         Angajat angajatComplet = this.masterRepo.findAngajatById(responsabilSelectat.getId());
         this.contractCurent.setResponsabil(angajatComplet);
-
-        // ------------- ZONA 3 -- TIPURI DE CONTRACTE --------------
-
-        private List<String> tipuriContract;
-
-        public List<String> getTipuriContract() {
-            if (tipuriContract == null) {
-                tipuriContract = new LinkedList<String>();
-                tipuriContract.add(TIP_CONTRACT_FURNIZARE);
-                tipuriContract.add(TIP_CONTRACT_SERVICII);
-                tipuriContract.add(TIP_CONTRACT_COLABORARE);
-            }
-            return tipuriContract;
-        }
-
-        public String getTipContractSelectat() {
-            return this.contractCurent.getTipContract();
-        }
-
-        public void setTipContractSelectat(String tipContract) {
-            this.contractCurent.setTipContract(tipContract);
-        }
-
-        // ------------- ZONA 4 -- STATUSURI CONTRACT --------------
-
-        private List<String> statusuriContract;
-
-        public List<String> getStatusuriContract() {
-            if (statusuriContract == null) {
-                statusuriContract = new LinkedList<String>();
-                statusuriContract.add(STATUS_ACTIV);
-                statusuriContract.add(STATUS_MODIFICAT);
-                statusuriContract.add(STATUS_REZILIAT);
-            }
-            return statusuriContract;
-        }
-
-        // ------------- ZONA 5 -- TIPURI DOCUMENTE AFERENTE --------------
-
-        private List<String> tipuriDocumenteAferente;
-
-        public List<String> getTipuriDocumenteAferente() {
-            if (tipuriDocumenteAferente == null) {
-                tipuriDocumenteAferente = new LinkedList<String>();
-                tipuriDocumenteAferente.add(TIP_DOCUMENT_FACTURA);
-                tipuriDocumenteAferente.add(TIP_DOCUMENT_ACT_ADITIONAL);
-                tipuriDocumenteAferente.add(TIP_DOCUMENT_REZILIERE);
-            }
-            return tipuriDocumenteAferente;
-        }
-
-        // ------------- ZONA 6 -- DOCUMENTE AFERENTE --------------
-
-        private List<ActeAferenteContract> documenteAferente;
-        private ActeAferenteContract documentAferentSelectat;
-
-        public List<ActeAferenteContract> getDocumenteAferente() {
-            return this.contractCurent.getActeAferente();
-        }
-
-        public ActeAferenteContract getDocumentAferentSelectat() {
-            return documentAferentSelectat;
-        }
-
-        public void setDocumentAferentSelectat(ActeAferenteContract documentAferentSelectat) {
-            this.documentAferentSelectat = documentAferentSelectat;
-        }
-
-        // ------------- ZONA 7 -- MODIFICARI CONTRACT --------------
-
-        private List<ModificareContract> modificariContract;
-        private ModificareContract modificareContractSelectata;
-
-        public List<ModificareContract> getModificariContract() {
-            return this.contractCurent.getModificari();
-        }
-
-        public ModificareContract getModificareContractSelectata() {
-            return modificareContractSelectata;
-        }
-
-        public void setModificareContractSelectata(ModificareContract modificareContractSelectata) {
-            this.modificareContractSelectata = modificareContractSelectata;
-        }
-
-        // GETTERI SI SETTERI pentru proprietățile zonei 0
-
-        public Contract getContractCurent() {
-            return contractCurent;
-        }
-
-        public void setContractCurent(Contract contractCurent) {
-            this.contractCurent = contractCurent;
-        }
-
-        public List<Contract> getListaContracte() {
-            return listaContracte;
-        }
-
-        public void setListaContracte(List<Contract> listaContracte) {
-            this.listaContracte = listaContracte;
-        }
-
-        public MasterRepository getMasterRepo() {
-            return masterRepo;
-        }
-
-        public void setMasterRepo(MasterRepository masterRepo) {
-            this.masterRepo = masterRepo;
-        }
-
-        public ContractRepository getContractRepo() {
-            return contractRepo;
-        }
-
-        public void setContractRepo(ContractRepository contractRepo) {
-            this.contractRepo = contractRepo;
-        }
     }
+
+    // ------------- ZONA 3 -- TIPURI DE CONTRACTE --------------//
+
+    private List<String> tipuriContract;
+
+    public List<String> getTipuriContract() {
+        if (tipuriContract == null) {
+            tipuriContract = new LinkedList<String>();
+            tipuriContract.add(TIP_CONTRACT_FURNIZARE);
+            tipuriContract.add(TIP_CONTRACT_SERVICII);
+            tipuriContract.add(TIP_CONTRACT_COLABORARE);
+        }
+        return tipuriContract;
+    }
+
+    public String getTipContractSelectat() {
+        return this.contractCurent.getTipContract();
+    }
+
+    public void setTipContractSelectat(String tipContract) {
+        this.contractCurent.setTipContract(tipContract);
+    }
+
+    // ------------- ZONA 4 -- STATUSURI CONTRACT --------------//
+
+    private List<String> statusuriContract;
+
+    public List<String> getStatusuriContract() {
+        if (statusuriContract == null) {
+            statusuriContract = new LinkedList<String>();
+            statusuriContract.add(STATUS_ACTIV);
+            statusuriContract.add(STATUS_MODIFICAT);
+            statusuriContract.add(STATUS_REZILIAT);
+        }
+        return statusuriContract;
+    }
+
+    // ------------- ZONA 5 -- TIPURI DOCUMENTE AFERENTE --------------//
+
+    private List<String> tipuriDocumenteAferente;
+
+    public List<String> getTipuriDocumenteAferente() {
+        if (tipuriDocumenteAferente == null) {
+            tipuriDocumenteAferente = new LinkedList<String>();
+            tipuriDocumenteAferente.add(TIP_DOCUMENT_FACTURA);
+            tipuriDocumenteAferente.add(TIP_DOCUMENT_ACT_ADITIONAL);
+            tipuriDocumenteAferente.add(TIP_DOCUMENT_REZILIERE);
+        }
+        return tipuriDocumenteAferente;
+    }
+
+    // ------------- ZONA 6 -- DOCUMENTE AFERENTE --------------//
+
+    private ActeAferenteContract documentAferentSelectat;
+
+    public List<ActeAferenteContract> getDocumenteAferente() {
+        return this.contractCurent.getActeAferente();
+    }
+
+    public ActeAferenteContract getDocumentAferentSelectat() {
+        return documentAferentSelectat;
+    }
+
+    public void setDocumentAferentSelectat(ActeAferenteContract documentAferentSelectat) {
+        this.documentAferentSelectat = documentAferentSelectat;
+    }
+
+    // ------------- ZONA 7 -- MODIFICARI CONTRACT --------------//
+
+    private ModificareContract modificareContractSelectata;
+
+    public List<ModificareContract> getModificariContract() {
+        return this.contractCurent.getModificari();
+    }
+
+    public ModificareContract getModificareContractSelectata() {
+        return modificareContractSelectata;
+    }
+
+    public void setModificareContractSelectata(ModificareContract modificareContractSelectata) {
+        this.modificareContractSelectata = modificareContractSelectata;
+    }
+
+    // GETTERI SI SETTERI pentru proprietățile zonei 0
+
+    public Contract getContractCurent() {
+        return contractCurent;
+    }
+
+    public void setContractCurent(Contract contractCurent) {
+        this.contractCurent = contractCurent;
+    }
+
+    public List<Contract> getListaContracte() {
+        return listaContracte;
+    }
+
+    public void setListaContracte(List<Contract> listaContracte) {
+        this.listaContracte = listaContracte;
+    }
+
+    public MasterRepository getMasterRepo() {
+        return masterRepo;
+    }
+
+    public void setMasterRepo(MasterRepository masterRepo) {
+        this.masterRepo = masterRepo;
+    }
+
+    public ContractRepository getContractRepo() {
+        return contractRepo;
+    }
+
+    public void setContractRepo(ContractRepository contractRepo) {
+        this.contractRepo = contractRepo;
+    }
+}

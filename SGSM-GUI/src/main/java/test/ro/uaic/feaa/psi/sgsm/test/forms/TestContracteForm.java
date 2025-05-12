@@ -12,15 +12,13 @@ import ro.uaic.feaa.psi.sgsm.model.entities.FormularReziliere;
 import ro.uaic.feaa.psi.sgsm.model.entities.ModificareContract;
 import src.ro.uaic.feaa.psi.sgsm.forms.ContracteFormCtrl;
 import src.ro.uaic.feaa.psi.sgsm.forms.ContracteFormData;
+import ro.uaic.feaa.psi.sgsm.model.entities.Furnizor;
 
 public class TestContracteForm {
 
 	public static void main(String[] args) {
 		// Instantiere controller formular
 		ContracteFormCtrl form = new ContracteFormCtrl();
-
-		// Asigurăm existența datelor de test
-		asiguraDateTest();
 
 		// Verificări inițiale: listele trebuie să aibă o sursă de date validă
 		verificariInitiale(form);
@@ -150,14 +148,7 @@ public class TestContracteForm {
 		}
 	}
 
-	/**
-	 * Asigură existența datelor de test necesare
-	 */
-	private static void asiguraDateTest() {
-		// Rulăm testele pentru a asigura existența datelor de bază în BD
-		TestFurnizori.main(null);
-		TestAngajati.main(null);
-	}
+
 
 	/**
 	 * Verificări privind inițializarea corectă a formularului
