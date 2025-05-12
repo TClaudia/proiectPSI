@@ -1,81 +1,61 @@
 package ro.uaic.feaa.psi.sgsm.model.entities;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
 
-/**
- * Entitate pentru gestionarea furnizorilor.
- * Conform diagramei din imaginile furnizate.
- */
+import ro.uaic.feaa.psi.metamodel.AbstractEntity;
+
 @Entity
-public class Furnizor {
+public class Furnizor extends AbstractEntity {
 
-    @Id
-    @Column(name = "IdFurnizor", length = 10)
+    @Column(unique = true)
     private String idFurnizor;
 
-    @Column(name = "NumeFurnizor", length = 255)
     private String numeFurnizor;
-
-    @Column(name = "NumeTelefon", length = 10)
-    private String numeTelefon;
-
-    @Column(name = "Email", length = 255)
+    private String numarTelefon;
     private String email;
-
-    @Column(name = "TipFurnizor", length = 30)
     private String tipFurnizor;
-
-    @Column(name = "Garantie", length = 30)
     private String garantie;
-
-    @Column(name = "CodFiscal", length = 30)
-    private String codFiscal;
-
-    @Column(name = "ConditiiMontaj", length = 255)
+    private String durataGarantie;
     private String conditiiMontaj;
 
-    @Column(name = "termenExpirare", length = 30)
-    private String termenExpirare;
-
-    @OneToMany(mappedBy = "furnizor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Contract> contracte = new HashSet<>();
-
-    @OneToMany(mappedBy = "furnizor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Comanda> comenzi = new HashSet<>();
-
-    @OneToMany(mappedBy = "furnizor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<DocumentInsotitor> documenteInsotitoare = new HashSet<>();
-
-    @OneToMany(mappedBy = "furnizor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<EvaluarePerformantaFurnizori> evaluari = new HashSet<>();
+    @Temporal(value = TemporalType.DATE)
+    private Date termenExpirare;
 
     /**
-     * Constructor implicit necesar pentru JPA.
+     * Constructor necesar pentru JPA
      */
     public Furnizor() {
     }
 
     /**
-     * Constructor pentru versiunea "light" a furnizorilor.
+     * Constructor necesar pentru a încărca doar anumite câmpuri din baza de
+     * date. Scop: optimizare acces la date și timp de execuție interogări.
+     *
+     * @param id - id-ul trebuie OBLIGATORIU încărcat din BD
+     * @param idFurnizor - codul furnizorului
+     * @param numeFurnizor - numele furnizorului
+     * @param numarTelefon - telefonul furnizorului
+     * @param email - emailul furnizorului
+     * @param tipFurnizor - tipul furnizorului
+     * @param garantie - garanția oferită
      */
-    public Furnizor(String idFurnizor, String numeFurnizor, String numeTelefon,
-                    String email, String tipFurnizor) {
+    public Furnizor(Long id, String idFurnizor, String numeFurnizor, String numarTelefon,
+                    String email, String tipFurnizor, String garantie) {
+        super();
+        this.id = id; //din superclasă
         this.idFurnizor = idFurnizor;
         this.numeFurnizor = numeFurnizor;
-        this.numeTelefon = numeTelefon;
+        this.numarTelefon = numarTelefon;
         this.email = email;
         this.tipFurnizor = tipFurnizor;
+        this.garantie = garantie;
     }
 
-    // Getteri și setteri
+    // Getters și Setters
     public String getIdFurnizor() {
         return idFurnizor;
     }
@@ -92,12 +72,12 @@ public class Furnizor {
         this.numeFurnizor = numeFurnizor;
     }
 
-    public String getNumeTelefon() {
-        return numeTelefon;
+    public String getNumarTelefon() {
+        return numarTelefon;
     }
 
-    public void setNumeTelefon(String numeTelefon) {
-        this.numeTelefon = numeTelefon;
+    public void setNumarTelefon(String numarTelefon) {
+        this.numarTelefon = numarTelefon;
     }
 
     public String getEmail() {
@@ -124,12 +104,12 @@ public class Furnizor {
         this.garantie = garantie;
     }
 
-    public String getCodFiscal() {
-        return codFiscal;
+    public String getDurataGarantie() {
+        return durataGarantie;
     }
 
-    public void setCodFiscal(String codFiscal) {
-        this.codFiscal = codFiscal;
+    public void setDurataGarantie(String durataGarantie) {
+        this.durataGarantie = durataGarantie;
     }
 
     public String getConditiiMontaj() {
@@ -140,27 +120,11 @@ public class Furnizor {
         this.conditiiMontaj = conditiiMontaj;
     }
 
-    public String getTermenExpirare() {
+    public Date getTermenExpirare() {
         return termenExpirare;
     }
 
-    public void setTermenExpirare(String termenExpirare) {
+    public void setTermenExpirare(Date termenExpirare) {
         this.termenExpirare = termenExpirare;
-    }
-
-    public Set<Contract> getContracte() {
-        return contracte;
-    }
-
-    public Set<Comanda> getComenzi() {
-        return comenzi;
-    }
-
-    public Set<DocumentInsotitor> getDocumenteInsotitoare() {
-        return documenteInsotitoare;
-    }
-
-    public Set<EvaluarePerformantaFurnizori> getEvaluari() {
-        return evaluari;
     }
 }

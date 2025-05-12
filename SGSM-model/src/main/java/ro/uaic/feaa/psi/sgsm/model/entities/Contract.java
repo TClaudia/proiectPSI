@@ -1,151 +1,91 @@
 package ro.uaic.feaa.psi.sgsm.model.entities;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import ro.uaic.feaa.psi.metamodel.AbstractEntity;
 
-/**
- * Entitate pentru gestionarea contractelor cu furnizorii.
- */
 @Entity
 public class Contract extends AbstractEntity {
 
-    @Column(name = "NumarContract", length = 50)
-    private String numarContract;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "DataDocument")
-    private Date dataDocument;
-
-    @Column(name = "TipDocument", length = 30)
+    // proprietăți identice cu cele din baza de date
+    private String idDocument;
     private String tipDocument;
 
-    @Column(name = "TipContract", length = 30)
+    @Temporal(value = TemporalType.DATE)
+    private Date dataDocument;
+
+    @Temporal(value = TemporalType.DATE)
+    private Date dataModificare;
+
+    private String numarContract;
+    private String durata;
     private String tipContract;
 
-    @Column(name = "Observatii", length = 255)
-    private String observatii;
-
-    @Column(name = "DurataContract")
-    private Integer durataContract;
-
-    @Column(name = "TermenePlata", length = 30)
-    private String termenePlata;
-
-    @Column(name = "TermeneLivrare", length = 50)
-    private String termeneLivrare;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "DataIncepere")
-    private Date dataIncepere;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "DataOperare")
-    private Date dataOperare;
-
     @ManyToOne
-    @JoinColumn(name = "Furnizor_id")
     private Furnizor furnizor;
 
     @ManyToOne
-    @JoinColumn(name = "Responsabil_id")
     private Angajat responsabil;
 
-    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<ModificareContract> modificari = new HashSet<>();
+    private String termenePlata;
+    private String termeneLibrare;
+    private String observatii;
 
-    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<ActeAferenteContract> acteAferente = new HashSet<>();
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<ActeAferenteContract> acteAferente = new HashSet<ActeAferenteContract>();
 
-    /**
-     * Constructor implicit necesar pentru JPA.
-     */
-    public Contract() {
-        this.tipDocument = "Contract";
-        this.dataOperare = new Date();
-    }
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<ModificareContract> modificari = new HashSet<ModificareContract>();
 
-    /**
-     * Adaugă o modificare la contract.
-     */
-    public void addModificare(ModificareContract modificare) {
-        modificari.add(modificare);
-        modificare.setContract(this);
-    }
-
-    /**
-     * Elimină o modificare din contract.
-     */
-    public void removeModificare(ModificareContract modificare) {
-        modificari.remove(modificare);
-        modificare.setContract(null);
-    }
-
-    /**
-     * Adaugă un act aferent la contract.
-     */
+    // Metode pentru gestionarea colecției acteAferente
     public void addActAferent(ActeAferenteContract act) {
-        acteAferente.add(act);
+        this.acteAferente.add(act);
         act.setContract(this);
     }
 
-    /**
-     * Elimină un act aferent din contract.
-     */
     public void removeActAferent(ActeAferenteContract act) {
-        acteAferente.remove(act);
+        this.acteAferente.remove(act);
         act.setContract(null);
     }
 
-    /**
-     * Returnează starea curentă a contractului bazată pe cea mai recentă modificare.
-     */
-    public String getStatusCurent() {
-        if (modificari == null || modificari.isEmpty()) {
-            return "Necunoscut";
-        }
-
-        ModificareContract ultimaModificare = null;
-        Date ultimaData = null;
-
-        for (ModificareContract mc : modificari) {
-            if (ultimaData == null || mc.getDataModificare().after(ultimaData)) {
-                ultimaData = mc.getDataModificare();
-                ultimaModificare = mc;
-            }
-        }
-
-        return ultimaModificare != null ? ultimaModificare.getStatus() : "Necunoscut";
+    public List<ActeAferenteContract> getActeAferente() {
+        return Collections.unmodifiableList(new LinkedList<>(this.acteAferente));
     }
 
-    // Getteri și setteri
-
-    public String getNumarContract() {
-        return numarContract;
+    // Metode pentru gestionarea colecției modificari
+    public void addModificare(ModificareContract modificare) {
+        this.modificari.add(modificare);
+        modificare.setContract(this);
     }
 
-    public void setNumarContract(String numarContract) {
-        this.numarContract = numarContract;
+    public void removeModificare(ModificareContract modificare) {
+        this.modificari.remove(modificare);
+        modificare.setContract(null);
     }
 
-    public Date getDataDocument() {
-        return dataDocument;
+    public List<ModificareContract> getModificari() {
+        return Collections.unmodifiableList(new LinkedList<>(this.modificari));
     }
 
-    public void setDataDocument(Date dataDocument) {
-        this.dataDocument = dataDocument;
+    // Getters and Setters
+    public String getIdDocument() {
+        return idDocument;
+    }
+
+    public void setIdDocument(String idDocument) {
+        this.idDocument = idDocument;
     }
 
     public String getTipDocument() {
@@ -156,28 +96,44 @@ public class Contract extends AbstractEntity {
         this.tipDocument = tipDocument;
     }
 
+    public Date getDataDocument() {
+        return dataDocument;
+    }
+
+    public void setDataDocument(Date dataDocument) {
+        this.dataDocument = dataDocument;
+    }
+
+    public Date getDataModificare() {
+        return dataModificare;
+    }
+
+    public void setDataModificare(Date dataModificare) {
+        this.dataModificare = dataModificare;
+    }
+
+    public String getNumarContract() {
+        return numarContract;
+    }
+
+    public void setNumarContract(String numarContract) {
+        this.numarContract = numarContract;
+    }
+
+    public String getDurata() {
+        return durata;
+    }
+
+    public void setDurata(String durata) {
+        this.durata = durata;
+    }
+
     public String getTipContract() {
         return tipContract;
     }
 
     public void setTipContract(String tipContract) {
         this.tipContract = tipContract;
-    }
-
-    public String getObservatii() {
-        return observatii;
-    }
-
-    public void setObservatii(String observatii) {
-        this.observatii = observatii;
-    }
-
-    public Integer getDurataContract() {
-        return durataContract;
-    }
-
-    public void setDurataContract(Integer durataContract) {
-        this.durataContract = durataContract;
     }
 
     public String getTermenePlata() {
@@ -188,28 +144,20 @@ public class Contract extends AbstractEntity {
         this.termenePlata = termenePlata;
     }
 
-    public String getTermeneLivrare() {
-        return termeneLivrare;
+    public String getTermeneLibrare() {
+        return termeneLibrare;
     }
 
-    public void setTermeneLivrare(String termeneLivrare) {
-        this.termeneLivrare = termeneLivrare;
+    public void setTermeneLibrare(String termeneLibrare) {
+        this.termeneLibrare = termeneLibrare;
     }
 
-    public Date getDataIncepere() {
-        return dataIncepere;
+    public String getObservatii() {
+        return observatii;
     }
 
-    public void setDataIncepere(Date dataIncepere) {
-        this.dataIncepere = dataIncepere;
-    }
-
-    public Date getDataOperare() {
-        return dataOperare;
-    }
-
-    public void setDataOperare(Date dataOperare) {
-        this.dataOperare = dataOperare;
+    public void setObservatii(String observatii) {
+        this.observatii = observatii;
     }
 
     public Furnizor getFurnizor() {
@@ -226,13 +174,5 @@ public class Contract extends AbstractEntity {
 
     public void setResponsabil(Angajat responsabil) {
         this.responsabil = responsabil;
-    }
-
-    public Set<ModificareContract> getModificari() {
-        return modificari;
-    }
-
-    public Set<ActeAferenteContract> getActeAferente() {
-        return acteAferente;
     }
 }

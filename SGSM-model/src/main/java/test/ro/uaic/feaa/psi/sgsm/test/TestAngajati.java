@@ -1,67 +1,62 @@
-package ro.uaic.feaa.psi.sgsm.test;
+package test;
 
 import java.util.List;
 
-import junit.framework.Assert;
-import ro.uaic.feaa.psi.sgsm.model.repository.AngajatRepository;
+import org.junit.Assert;
+
+import ro.uaic.feaa.psi.sgsm.model.entities.Angajat;
+import ro.uaic.feaa.psi.sgsm.model.repository.MasterRepository;
 
 /**
- * Test pentru entitatea Angajat. Teste efectuate:
- * # extragere lista de angajați
- * # adăugare Angajat
+ * Test pentru Angajati. Teste efectuate:
+ * # extragere lista de angajati
+ * # adaugare Angajat
  */
 public class TestAngajati {
 
-    static AngajatRepository repo = new AngajatRepository();
+    static MasterRepository repo = new MasterRepository();
 
     public static void main(String[] args) {
-        List<Angajat> angajati = repo.findAllAngajati();
+        List<Angajat> angajati = repo.findAngajatiAll();
 
-        // Dacă nu sunt angajați, adăugăm câțiva pentru teste
-        if (angajati.size() == 0) {
+        if (angajati.size() == 0) { // dacă nu sunt date în tabelă, adăugăm date de test
             adaugaAngajati();
-            angajati = repo.findAllAngajati();
+            angajati = repo.findAngajatiAll();
         }
 
-        /**
-         * Adaugă angajați de test în baza de date.
-         */
-        private static void adaugaAngajati() {
-            repo.beginTransaction();
+        // acum ar trebui să avem date de test
+        Assert.assertTrue("Nu avem angajați în baza de date", angajati.size() > 0);
 
-            try {
-                // Adăugăm câțiva angajați de test
-                for (int i = 1; i <= 5; i++) {
-                    Angajat angajat = new Angajat();
-                    angajat.setMarcaAngajat(1000 + i);
-                    angajat.setNumeAngajat("Angajat Test " + i);
-                    angajat.setFunctieAngajat("Functie Test " + i);
-                    angajat.setEmail("angajat" + i + "@test.com");
-                    angajat.setTelefon("07" + String.format("%08d", i));
-
-                    repo.addAngajat(angajat);
-                }
-
-                repo.commitTransaction();
-                System.out.println("Angajați de test adăugați cu succes.");
-            } catch (Exception e) {
-                System.err.println("Eroare la adăugarea angajaților: " + e.getMessage());
-                e.printStackTrace();
-                // Tranzacția va fi anulată automat de EntityManager
-            }
+        // Afișăm angajații
+        System.out.println("\nLista angajaților:");
+        for (Angajat a : angajati) {
+            System.out.println("ID: " + a.getIdAngajat() + ", Nume: " + a.getNumeAngajat() +
+                    ", Responsabilitate: " + a.getResponsabilitate() +
+                    ", Departament: " + a.getDepartament());
         }
     }
 
-    // Verificăm că avem cel puțin un angajat
-        Assert.assertTrue("Nu există angajați în baza de date", angajati.size() > 0);
+    public static void adaugaAngajati() {
+        repo.beginTransaction();
 
-    // Testăm varianta optimizată de încărcare (light)
-    List<Angajat> angajatiLight = repo.findAllAngajatiLight();
-        Assert.assertEquals("Numărului de angajați din lista light diferă",
-                angajati.size(), angajatiLight.size());
+        // Adăugăm câțiva angajați cu responsabilități diferite
+        String[] nume = {"Popescu Ion", "Ionescu Ana", "Georgescu Mihai", "Vasilescu Elena", "Dumitrescu Dan"};
+        String[] responsabilitati = {"Manager Contracte", "Responsabil Achiziții", "Agent Vânzări",
+                "Responsabil Juridic", "Director Comercial"};
+        String[] departamente = {"Vânzări", "Achiziții", "Vânzări", "Juridic", "Management"};
 
-    // Afișăm angajații pentru verificare manuală
-        for (Angajat a : angajati) {
-        System.out.println(a.getMarcaAngajat() + " - " + a.getNumeAngajat() + " (" + a.getFunctieAngajat() + ")");
+        for (int i = 0; i < nume.length; i++) {
+            Angajat angajat = new Angajat();
+            angajat.setIdAngajat("A" + (i + 100));
+            angajat.setNumeAngajat(nume[i]);
+            angajat.setResponsabilitate(responsabilitati[i]);
+            angajat.setDepartament(departamente[i]);
+
+            repo.addAngajat(angajat);
+        }
+
+        repo.commitTransaction();
+
+        System.out.println("Au fost adăugați " + nume.length + " angajați!");
     }
 }

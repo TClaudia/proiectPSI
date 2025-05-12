@@ -2,6 +2,7 @@ package ro.uaic.feaa.psi.sgsm.model.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -9,7 +10,7 @@ import java.util.Date;
 import ro.uaic.feaa.psi.metamodel.AbstractEntity;
 
 @Entity
-public class ActeAferenteContract extends AbstractEntity {
+public class ModificareContract extends AbstractEntity {
 
     private String idDocument;
     private String tipDocument;
@@ -17,11 +18,17 @@ public class ActeAferenteContract extends AbstractEntity {
     @Temporal(value = TemporalType.DATE)
     private Date dataDocument;
 
-    private String numarActContract;
     private String modificariActe;
+    private String status; // "Activ", "Modificat", "Reziliat"
 
     @ManyToOne
     private Contract contract;
+
+    @OneToOne
+    private ActAditional actAditional;
+
+    @OneToOne
+    private FormularReziliere formularReziliere;
 
     // Getters and Setters
     public String getIdDocument() {
@@ -48,14 +55,6 @@ public class ActeAferenteContract extends AbstractEntity {
         this.dataDocument = dataDocument;
     }
 
-    public String getNumarActContract() {
-        return numarActContract;
-    }
-
-    public void setNumarActContract(String numarActContract) {
-        this.numarActContract = numarActContract;
-    }
-
     public String getModificariActe() {
         return modificariActe;
     }
@@ -64,11 +63,38 @@ public class ActeAferenteContract extends AbstractEntity {
         this.modificariActe = modificariActe;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Contract getContract() {
         return contract;
     }
 
     public void setContract(Contract contract) {
         this.contract = contract;
+    }
+
+    public ActAditional getActAditional() {
+        return actAditional;
+    }
+
+    public void setActAditional(ActAditional actAditional) {
+        this.actAditional = actAditional;
+    }
+
+    public FormularReziliere getFormularReziliere() {
+        return formularReziliere;
+    }
+
+    public void setFormularReziliere(FormularReziliere formularReziliere) {
+        this.formularReziliere = formularReziliere;
+    }
+
+    public void setDataModificare(Date date) {
     }
 }
