@@ -83,15 +83,6 @@ public class TestContracte {
         System.out.println("Contracte active: " + contracteActive.size());
     }
 
- /*   private static void asiguraDateTest() {
-        // Rulăm testele pentru a asigura existența datelor de bază în BD
-        try {
-           test.TestFurnizori.main(null);
-            test.TestAngajati.main(null);
-        } catch (Exception e) {
-            System.out.println("Eroare la încărcarea datelor de test pentru furnizori/angajați: " + e.getMessage());
-        }
-    }*/
 
     private static void adaugaContracte() {
         // Verificăm dacă avem furnizori și angajați

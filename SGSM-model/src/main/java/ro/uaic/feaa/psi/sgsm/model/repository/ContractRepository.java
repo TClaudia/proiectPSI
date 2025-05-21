@@ -244,14 +244,6 @@ public class ContractRepository extends AbstractRepository {
                 .getResultList();
     }
 
-    /**
-     * Găsește contractele care expiră într-o anumită perioadă.
-     * Folosește durata contractului pentru a calcula data de expirare.
-     *
-     * @param startDate data de început
-     * @param endDate data de sfârșit
-     * @return lista de contracte care expiră în perioada specificată
-     */
     public List<Contract> findContractsDueToExpire(Date startDate, Date endDate) {
         // Această metodă este mai complexă și ar necesita logică suplimentară
         // pentru a calcula data de expirare bazată pe durata contractului
@@ -260,6 +252,50 @@ public class ContractRepository extends AbstractRepository {
                 .createQuery("SELECT c FROM Contract c WHERE c.dataDocument BETWEEN :startDate AND :endDate")
                 .setParameter("startDate", startDate)
                 .setParameter("endDate", endDate)
+                .getResultList();
+    }
+
+    /**
+     * Obține numărul total de contracte pentru fiecare furnizor.
+     *
+     * @return lista de obiecte Object[] conținând [furnizor, număr de contracte]
+     */
+    public List<Object[]> getContractCountByFurnizor() {
+        return this.getEm()
+                .createQuery("SELECT f, COUNT(c) FROM Furnizor f LEFT JOIN Contract c ON c.furnizor = f GROUP BY f")
+                .getResultList();
+    }
+
+    /**
+     * Obține numărul total de contracte pentru fiecare angajat responsabil.
+     *
+     * @return lista de obiecte Object[] conținând [angajat, număr de contracte]
+     */
+    public List<Object[]> getContractCountByAngajat() {
+        return this.getEm()
+                .createQuery("SELECT a, COUNT(c) FROM Angajat a LEFT JOIN Contract c ON c.responsabil = a GROUP BY a")
+                .getResultList();
+    }
+
+    /**
+     * Obține numărul de contracte după status.
+     *
+     * @return lista de obiecte Object[] conținând [status, număr de contracte]
+     */
+    public List<Object[]> getContractCountByStatus() {
+        return this.getEm()
+                .createQuery("SELECT m.status, COUNT(DISTINCT c) FROM Contract c JOIN c.modificari m GROUP BY m.status")
+                .getResultList();
+    }
+
+    /**
+     * Obține numărul de contracte după tip.
+     *
+     * @return lista de obiecte Object[] conținând [tip contract, număr de contracte]
+     */
+    public List<Object[]> getContractCountByType() {
+        return this.getEm()
+                .createQuery("SELECT c.tipContract, COUNT(c) FROM Contract c GROUP BY c.tipContract")
                 .getResultList();
     }
 }

@@ -14,7 +14,9 @@ import ro.uaic.feaa.psi.sgsm.model.entities.*;
  */
 public class ContracteFormCtrl {
 
-    // date formularului sunt păstrate într-un obiect ContracteFormData
+
+
+
     private ContracteFormData formData = new ContracteFormData();
 
     public ContracteFormData getFormData() {
@@ -32,8 +34,6 @@ public class ContracteFormCtrl {
      * ulterior datele introduse de utilizator în formular.
      */
     public void contractNou() {
-        // se creează noul contract și se procedează la setarea lui ca document
-        // curent al formularului
         Contract contract = new Contract();
         this.formData.setContractCurent(contract);
 
@@ -43,15 +43,12 @@ public class ContracteFormCtrl {
         contract.setDataDocument(new java.util.Date()); // data curentă
         contract.setDataModificare(new java.util.Date()); // data curentă
 
-        // Este bine să stabilim și o valoare default pentru toate relațiile ManyToOne
-        // dacă avem furnizori în listă
         if (!this.formData.getListaFurnizorilor().isEmpty()) {
             Furnizor furnizorDefault = this.formData.getListaFurnizorilor().get(0);
             contract.setFurnizor(furnizorDefault);
             System.out.println("Furnizor default setat: " + furnizorDefault.getNumeFurnizor());
         }
 
-        // dacă avem angajați în listă
         if (!this.formData.getListaAngajati().isEmpty()) {
             Angajat angajat = this.formData.getListaAngajati().get(0);
             contract.setResponsabil(angajat);
@@ -62,8 +59,6 @@ public class ContracteFormCtrl {
         if (!this.formData.getTipuriContract().isEmpty()) {
             contract.setTipContract(this.formData.getTipuriContract().get(0));
         }
-
-        // adăugăm o modificare inițială cu statusul "Activ"
         adaugaModificareInitiala();
     }
 
@@ -85,7 +80,6 @@ public class ContracteFormCtrl {
      * Generează un nou document aferent pentru a fi prezentat în tabelul de documente.
      */
     public void adaugaDocumentAferent() {
-        // verificăm existența unui contract curent
         if (this.formData.getContractCurent() == null)
             throw new RuntimeException("Selectați mai întâi un contract!");
 
@@ -93,7 +87,6 @@ public class ContracteFormCtrl {
         act.setIdDocument("DA" + System.currentTimeMillis()); // ID unic bazat pe timestamp
         act.setDataDocument(new java.util.Date()); // data curentă
 
-        // setăm tipul de document implicit
         if (!this.formData.getTipuriDocumenteAferente().isEmpty()) {
             act.setTipDocument(this.formData.getTipuriDocumenteAferente().get(0));
         }
@@ -109,7 +102,6 @@ public class ContracteFormCtrl {
      * Generează un nou Act Adițional pentru a fi asociat contractului.
      */
     public void adaugaActAditional() {
-        // verificăm existența unui contract curent
         if (this.formData.getContractCurent() == null)
             throw new RuntimeException("Selectați mai întâi un contract!");
 
@@ -141,18 +133,17 @@ public class ContracteFormCtrl {
      * Generează un nou Formular de Reziliere pentru a fi asociat contractului.
      */
     public void adaugaFormularReziliere() {
-        // verificăm existența unui contract curent
         if (this.formData.getContractCurent() == null)
             throw new RuntimeException("Selectați mai întâi un contract!");
 
         FormularReziliere formularReziliere = new FormularReziliere();
-        formularReziliere.setIdDocument("FR" + System.currentTimeMillis()); // ID unic bazat pe timestamp
-        formularReziliere.setDataDocument(new java.util.Date()); // data curentă
+        formularReziliere.setIdDocument("FR" + System.currentTimeMillis());
+        formularReziliere.setDataDocument(new java.util.Date());
         formularReziliere.setTipDocument(ContracteFormData.TIP_DOCUMENT_REZILIERE);
         formularReziliere.setModificariActe("Reziliere contract");
 
         ModificareContract modificare = new ModificareContract();
-        modificare.setIdDocument("MCR" + System.currentTimeMillis()); // ID unic bazat pe timestamp
+        modificare.setIdDocument("MCR" + System.currentTimeMillis());
         modificare.setTipDocument("Reziliere");
         modificare.setStatus(ContracteFormData.STATUS_REZILIAT);
         modificare.setDataDocument(new java.util.Date());
@@ -172,25 +163,19 @@ public class ContracteFormCtrl {
      * Implementează comportamentul pentru butonul Salvare din formular.
      * Salvează contractul curent și toate entitățile asociate în baza de date.
      */
+
+    //DIAGRAMA
     public void salveazaContract() {
-        // verificăm existența unui contract curent
         if (this.formData.getContractCurent() == null)
             throw new RuntimeException("Nu există un contract de salvat!");
 
-        // începem o tranzacție
         this.formData.getContractRepo().beginTransaction();
 
         try {
-            // salvăm contractul în baza de date
             Contract contractSalvat = this.formData.getContractRepo().saveContract(this.formData.getContractCurent());
-
-            // actualizăm contractul curent cu cel salvat
             this.formData.setContractCurent(contractSalvat);
-
-            // comitem tranzacția
             this.formData.getContractRepo().commitTransaction();
         } catch (Exception e) {
-            // în caz de eroare, afișăm un mesaj și anulăm tranzacția
             throw new RuntimeException("Eroare la salvarea contractului: " + e.getMessage());
         }
     }
@@ -200,10 +185,7 @@ public class ContracteFormCtrl {
      * Actualizează lista de contracte din formData.
      */
     public void cautaContracte(Long furnizorId, String status, Date dataInceput, Date dataSfarsit) {
-        // începem cu lista completă
         this.formData.setListaContracte(this.formData.getContractRepo().findContractAll());
-
-        // apoi aplicăm filtrele, dacă sunt specificate
         if (furnizorId != null) {
             this.formData.setListaContracte(this.formData.getContractRepo().findContractByFurnizorId(furnizorId));
         }
@@ -233,24 +215,15 @@ public class ContracteFormCtrl {
      * Șterge contractul curent din baza de date.
      */
     public void stergeContract() {
-        // verificăm existența unui contract curent
         if (this.formData.getContractCurent() == null)
             throw new RuntimeException("Nu există un contract de șters!");
-
-        // începem o tranzacție
         this.formData.getContractRepo().beginTransaction();
 
         try {
-            // ștergem contractul din baza de date
             this.formData.getContractRepo().deleteContract(this.formData.getContractCurent());
-
-            // resetăm contractul curent
             this.formData.setContractCurent(null);
-
-            // comitem tranzacția
             this.formData.getContractRepo().commitTransaction();
         } catch (Exception e) {
-            // în caz de eroare, afișăm un mesaj și anulăm tranzacția
             throw new RuntimeException("Eroare la ștergerea contractului: " + e.getMessage());
         }
     }

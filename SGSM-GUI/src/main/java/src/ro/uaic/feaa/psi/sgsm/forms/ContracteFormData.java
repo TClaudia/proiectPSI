@@ -1,8 +1,6 @@
 package src.ro.uaic.feaa.psi.sgsm.forms;
-
 import java.util.LinkedList;
 import java.util.List;
-
 import ro.uaic.feaa.psi.sgsm.model.entities.ActAditional;
 import ro.uaic.feaa.psi.sgsm.model.entities.ActeAferenteContract;
 import ro.uaic.feaa.psi.sgsm.model.entities.Angajat;
@@ -47,7 +45,6 @@ public class ContracteFormData {
     private MasterRepository masterRepo = new MasterRepository();
     private ContractRepository contractRepo = new ContractRepository();
 
-    // ---------------ZONA 1 - FURNIZORI --------------//
 
     private List<Furnizor> listaFurnizorilor;
 
